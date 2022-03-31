@@ -93,32 +93,23 @@ void display(node *head)
     }
 }
 
+
 // Function to generate random number:
-void randomNum()
+void randomDirection()
 {
     // Initialization, should only be called once.
-    srand(time(NULL));   
+    srand(time(0));   
 
     // Generate random number < 2
     int r = rand() % 2;    
 
-    //Print random number
-    printf("randNum: %d", r);
+    //Print the isLeft boolean 
+    printf("isLeft: %d \n", r);
 }
 
 /* Function code: ------------------------------------------ */
 int main()
 {
-    // // Print top of both queues
-    // display(leftQueue->front);
-    // display(rightQueue->front);
-
-    // //stack element
-    // enqueue(rightQueue, 1);
-
-    // //Dequeue 
-    // dequeue(leftQueue);
-
     // Make a left queue and assign dynamic memory to it
     queue *leftQueue;
     leftQueue = malloc(sizeof(queue));
@@ -129,9 +120,14 @@ int main()
     rightQueue = malloc(sizeof(queue));
     initialize(rightQueue);
     
-    //Generate Random number:
-    randomNum();
+    //Generate Direction:
+    // randomDirection();
 
-
+    int i = 0;
+    for (i = 0; i < 5; i ++)
+    {
+        randomDirection();
+    }
+    
     return 0;
 }
