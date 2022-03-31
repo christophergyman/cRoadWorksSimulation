@@ -1,6 +1,7 @@
 /* Library Includes: ---------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -95,7 +96,14 @@ void display(node *head)
 // Function to generate random number:
 void randomNum()
 {
-    print("yo");
+    // Initialization, should only be called once.
+    srand(time(NULL));   
+
+    // Generate random number < 2
+    int r = rand() % 2;    
+
+    //Print random number
+    printf("randNum: %d", r);
 }
 
 /* Function code: ------------------------------------------ */
@@ -111,9 +119,6 @@ int main()
     // //Dequeue 
     // dequeue(leftQueue);
 
-
-
-
     // Make a left queue and assign dynamic memory to it
     queue *leftQueue;
     leftQueue = malloc(sizeof(queue));
@@ -123,11 +128,9 @@ int main()
     queue *rightQueue;
     rightQueue = malloc(sizeof(queue));
     initialize(rightQueue);
-
-
-
-
-
+    
+    //Generate Random number:
+    randomNum();
 
 
     return 0;

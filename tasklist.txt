@@ -1,1 +1,13 @@
 1) function to generate random number
+
+# # useful code reminders
+
+    // // Print top of both queues
+    display(leftQueue->front);
+    display(rightQueue->front);
+
+    //stack element
+    enqueue(rightQueue, 1);
+
+    //Dequeue 
+    dequeue(leftQueue);
