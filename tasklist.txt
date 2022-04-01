@@ -1,4 +1,4 @@
-1) Re do random number generator and use GSL library instead
+1) Do timing of the cars
 
 # # useful code reminders
 

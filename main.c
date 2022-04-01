@@ -87,28 +87,30 @@ void display(node *head)
 {
     if(head == NULL)
     {
-        printf("NULL\n");
+        /* printf("NULL\n"); */
     }
     else
     {
-        printf("%d\n", head -> data);
+        /* printf("%d\n", head -> data); */
         display(head->next);
     }
 }
 
-
-/* Function to generate random number: */
-void randomDirection()
+/* return if head is null */
+int intDisplay(node *head)
 {
-    /* Initialization, should only be called once. */
-    srand(time(0));   
-
-    /* Generate random number < 2 */
-    int r = rand() % 2;    
-
-    /*Print the isLeft boolean  */
-    printf("isLeft: %d \n", r);
+    if(head == NULL)
+    {
+        /* printf("NULL\n"); */
+        return 0;
+    }
+    else
+    {
+        display(head->next);
+        return 1;
+    }
 }
+
 
 /* GSL random number generator */
 float randomFloatNum() {
@@ -174,38 +176,72 @@ int main()
     if (startLightFloat == 0){
         leftLight = 0;
         rightLight = 1;
+        printf("right light: green\n");
     }
     else {
         leftLight = 1;
         rightLight = 0;
+        printf("left light: green\n");
     }
 
              /* Main simulation loop */ 
-    printf("Starting lights:\n L-Light: %d \n R-Light: %d \n", leftLight, rightLight); 
 
     /* zero or one joins left queue */
     int joinLeft = randomIntNum();
     if (joinLeft == 1){
         enqueue(leftQueue, 1);
+        printf("car joins left queue \n");
     }
 
     /* zero or one joins right queue */
     int joinRight = randomIntNum();
     if (joinRight == 1){
         enqueue(rightQueue, 1);
+        printf("car joins right queue \n");
     }
 
             /* Zero or one pass through lights depending on lights */
     
+    /* Returns 1 if queue is not empty */
+    int hasLeftQueueHeadValue = intDisplay(leftQueue->front);
+    int hasRightQueueHeadValue = intDisplay(rightQueue->front);
+
     /* zero or one pass through lights */
     int passThroughLights = randomIntNum();
     if (passThroughLights == 1){
-        printf("Pass through lights!");
+        printf("Pass through lights requested...  \n");
+
+    /* Check lights to see which to dequeue, 0=red, 1=green */
+        if (leftLight == 1){
+
+        /* left car (queue) goes through (dequeue) */
+            /* Check if leftQueue is not null */
+            if (hasLeftQueueHeadValue == 1){
+                dequeue(leftQueue);
+                printf("Left car goes through \n");
+            } else {
+                printf("Left queue is empty \n");
+            }
+        } else {
+
+        /* right car (queue) goes through (dequeue) */
+            /* Check if rightQueue is not null */
+            if (hasRightQueueHeadValue == 1){
+                dequeue(leftQueue);
+                printf("right car goes through \n");
+            } else {
+                printf("Right queue is empty \n");
+            }
+        }
+
     } else {
-        printf("Dont pass through lights \n");
+        printf("Request not to pass through \n");
     }
 
 
+    /* Freeing the queues from memory */
+    free(leftQueue);
+    free(rightQueue);
 
     return 0;
 }
