@@ -1,54 +1,12 @@
 #include "queueFunc.c"
 #include "numGenerators.c"
 
-/* GSL random number generator */
-float randomFloatNum() {
-
-    /* Random number function based on the GNU Scientific Library */
-    /* Returns a random float between 0 and 1, exclusive; e.g., (0,1) */
-    const gsl_rng_type * T;
-    gsl_rng * r;
-    gsl_rng_env_setup();
-
-    /* Seed generation based on time */
-    struct timeval tv; 
-    gettimeofday(&tv,0);
-    unsigned long mySeed = tv.tv_sec + tv.tv_usec;
-
-    /* Generator setup */
-    T = gsl_rng_default; 
-    r = gsl_rng_alloc (T);
-    gsl_rng_set(r, mySeed);
-
-    /* Generate it! */
-    double u = gsl_rng_uniform(r); 
-    gsl_rng_free (r);
-    return (float)u;
-}
-
-/* Returns an integer thats either 0 or 1 */
-int randomIntNum();
-int randomIntNum(){
-    short randomInteger = 0;
-    float x = randomFloatNum();
-    if (x >= 0.5)
-    {
-        randomInteger = 0;
-    } 
-    else 
-    {
-        randomInteger = 1;
-    }
-
-    return randomInteger;
-}
 
 
 /* Function code: ------------------------------------------ */
 int main()
 {
     /* Make a left queue and assign dynamic memory to it */
-
     queue leftQueue;
     queue *pLeftQueue = &leftQueue;
     pLeftQueue = malloc(sizeof(queue));
@@ -143,7 +101,7 @@ int main()
             
             /* Left queue is empty */
             if (leftNotEmpty == 0){
-                printf("Left is empty: %d \n", leftNotEmpty);
+                printf("Left queue is empty...: %d \n", leftNotEmpty);
             }
         } 
 
@@ -159,7 +117,7 @@ int main()
             
             /* Right queue is empty */
             if (rightNotEmpty == 0){
-                printf("Right is empty: %d \n", rightNotEmpty);
+                printf("Right queue is empty...: %d \n", rightNotEmpty);
             }
 
         }
