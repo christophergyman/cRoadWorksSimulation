@@ -1,34 +1,4 @@
-/* Library Includes: ---------------------------------------*/
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_rng.h>
-#include <sys/time.h>
-
-#define TRUE 1
-#define FALSE 0
-#define FULL 10
-
-/* Prototypes:  ---------------------------------------------*/
-
-/*Node object*/
-struct node
-{
-    int data;
-    struct node *next;
-};
-typedef struct node node;
-
-/*  queue object */
-struct queue
-{
-    int count;
-    node *front;
-    node *rear;
-};
-typedef struct queue queue;
-
+#include "main.h"
 
 /* Initialize empty queue */
 void initialize(queue *q)
@@ -38,7 +8,7 @@ void initialize(queue *q)
     q->rear = NULL;
 }
 
-/* function to check if empty */
+/* function to check if queue is empty */
 int isempty(queue *q)
 {
     return (q->rear == NULL);
