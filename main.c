@@ -13,12 +13,11 @@ int main()
     queue rightQueue;
     queue *pRightQueue = &rightQueue;
     pRightQueue = malloc(sizeof(queue));
-
-        /* initialising the queues */
+    /* initialising the queues with default values */
     initialize(pLeftQueue);
     initialize(pRightQueue);
 
-        /* Initialize starting traffic light left and right */
+    /* Initialize starting traffic light left and right variables */
     short leftLight;
     short *pLeftLight = &leftLight;
     short rightLight;
@@ -26,8 +25,28 @@ int main()
     int startLightFloat;
     int *pStartLightFloat = &startLightFloat;
 
-    *pStartLightFloat = randomIntNum(); 
+    /* Initialise variables checking cars should join left or right queue */
+    int joinLeft;
+    int *pJoinLeft = &joinLeft; 
+    int joinRight;
+    int *pJoinRight = &joinRight;
 
+    
+    /* Intialise variables, these are used to check if head of queue is null */
+    int hasLeftQueueHeadValue;
+    int *pHasLeftQueueHeadValue = & hasLeftQueueHeadValue;
+    int hasRightQueueHeadValue;
+    int *pHasRightQueueHeadValue = & hasRightQueueHeadValue;
+    int passThroughLights;
+    int *pPassThroughLights = & passThroughLights;
+
+
+
+
+    /* ----------------Main simulation loop -------------------------*/ 
+
+    /* Current iteration light change */
+    *pStartLightFloat = randomIntNum(); 
     if (*pStartLightFloat == 0){
         *pLeftLight = 0;
         *pRightLight = 1;
@@ -39,49 +58,34 @@ int main()
         printf("left light: green\n");
     }
 
-             /* Main simulation loop */ 
 
-    /* zero or one joins left queue */
-    int joinLeft;
-    int *pJoinLeft = &joinLeft; 
+    /* zero or one car left queue */
     *pJoinLeft = randomIntNum();
-
     if (*pJoinLeft == 1){
         enqueue(pLeftQueue, 1);
         printf("car joins left queue \n");
     }
 
-    /* zero or one joins right queue */
-    int joinRight;
-    int *pJoinRight = &joinRight;
-    *pJoinRight = randomIntNum();
 
+    /* zero or one car right queue */
+    *pJoinRight = randomIntNum();
     if (*pJoinRight == 1){
         enqueue(pRightQueue, 1);
         printf("car joins right queue \n");
     }
 
-            /* Zero or one pass through lights depending on lights */
-    
-    /* Returns 1 if queue is not empty */
-    int hasLeftQueueHeadValue;
-    int *pHasLeftQueueHeadValue = & hasLeftQueueHeadValue;
-    *pHasLeftQueueHeadValue = intDisplay(pLeftQueue->front);
 
-    int hasRightQueueHeadValue;
-    int *pHasRightQueueHeadValue = & hasRightQueueHeadValue;
+    /* checks if left and right queue are not null */
+    *pHasLeftQueueHeadValue = intDisplay(pLeftQueue->front);
     *pHasRightQueueHeadValue = intDisplay(pRightQueue->front);
 
-    /* zero or one pass through lights */
-    int passThroughLights;
-    int *pPassThroughLights = & passThroughLights;
-    *pPassThroughLights = randomIntNum();
 
-    /* check to see if both of the queues are not empty */
+    /* variables that will be used later to check if queue is not empty */
     int leftNotEmpty = intDisplay(pLeftQueue->front);
     int rightNotEmpty = intDisplay(pRightQueue->front);
 
     /* Check to see if the cars should pass through the lights */
+    *pPassThroughLights = randomIntNum();
     if (*pPassThroughLights == 1){
         printf("Pass through lights requested...  \n");
 
@@ -120,7 +124,6 @@ int main()
     } else {
         printf("Request not to pass through \n");
     }
-
 
     /* Freeing the queues from memory */
     free(pLeftQueue);
