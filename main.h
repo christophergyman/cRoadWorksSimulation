@@ -5,7 +5,7 @@
 /* Defines --------------------------------------------------*/
 #define TRUE 1
 #define FALSE 0
-#define FULL 10
+#define FULL 100000
 
 /* Struct and Objects --------------------------------------*/
 
