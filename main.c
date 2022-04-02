@@ -158,6 +158,16 @@ int randomIntNum(){
 /* Function code: ------------------------------------------ */
 int main()
 {
+
+    /* Using pointers to change values of variables:
+    int num = 1;
+    int *pointerNum = &num;
+    printf("Num: %d      Pointer: %d \n" , num, *pointerNum);
+    *pointerNum = 5;
+    printf("Num: %d      Pointer: %d \n" , num, *pointerNum);
+
+    */
+
     /* Make a left queue and assign dynamic memory to it */
     queue *leftQueue;
     leftQueue = malloc(sizeof(queue));

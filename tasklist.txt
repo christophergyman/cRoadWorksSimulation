@@ -8,6 +8,20 @@ gcc -ansi -c main.c -o main.o
     // Link compiled object with library
 gcc main.o -lgsl -lgslcblas -o main
 
+
+    
+                 ///* Using pointers to change values of variables:
+    int num = 1;
+    int *pointerNum = &num;
+    printf("Num: %d      Pointer: %d \n" , num, *pointerNum);
+    *pointerNum = 5;
+    printf("Num: %d      Pointer: %d \n" , num, *pointerNum);
+
+                */
+
+
+
+
     // // Print top of both queues
     display(leftQueue->front);
     display(rightQueue->front);
