@@ -6,27 +6,26 @@
 /* Function code: ------------------------------------------ */
 int main()
 {
-    /* Make a left queue and assign dynamic memory to it */
+    /* Make a queues and assign dynamic memory to it */
     queue leftQueue;
     queue *pLeftQueue = &leftQueue;
     pLeftQueue = malloc(sizeof(queue));
-    initialize(pLeftQueue);
-
     queue rightQueue;
     queue *pRightQueue = &rightQueue;
     pRightQueue = malloc(sizeof(queue));
+
+        /* initialising the queues */
+    initialize(pLeftQueue);
     initialize(pRightQueue);
 
-
-    /* Initialize starting traffic light left and right */
+        /* Initialize starting traffic light left and right */
     short leftLight;
     short *pLeftLight = &leftLight;
-
     short rightLight;
     short *pRightLight = &rightLight;
-
     int startLightFloat;
     int *pStartLightFloat = &startLightFloat;
+
     *pStartLightFloat = randomIntNum(); 
 
     if (*pStartLightFloat == 0){
@@ -46,9 +45,6 @@ int main()
     int joinLeft;
     int *pJoinLeft = &joinLeft; 
     *pJoinLeft = randomIntNum();
-
-
-
 
     if (*pJoinLeft == 1){
         enqueue(pLeftQueue, 1);
