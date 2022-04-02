@@ -40,22 +40,45 @@ int main()
     int passThroughLights;
     int *pPassThroughLights = & passThroughLights;
 
+    /* Variables that track the progress of the traffic */
+    int lightChanged = 0;
+    int *pLightChanged = &lightChanged;
 
+    int leftCarAdded = 0;
+    int *pLeftCarAdded= &leftCarAdded;
 
+    int rightCarAdded = 0;
+    int *pRightCarAdded= &rightCarAdded;
+
+    int carAddedCounter = 0;
+    int *pCarAddedCounter= &carAddedCounter;
+
+    int requestCarPass = 0;
+    int *pRequestCarPass = &requestCarPass;
+
+    int leftCarPassed = 0;
+    int *pLeftCarpassed = &leftCarPassed;
+
+    int rightCarPassed = 0;
+    int *pRightCarpassed = &rightCarPassed;
+
+    int totalCarsPassed = 0;
+    int *pTotalCarsPassed = &totalCarsPassed;
 
     /* ----------------Main simulation loop -------------------------*/ 
+
 
     /* Current iteration light change */
     *pStartLightFloat = randomIntNum(); 
     if (*pStartLightFloat == 0){
         *pLeftLight = 0;
         *pRightLight = 1;
-        printf("right light: green\n");
+        *pLightChanged = *pLightChanged + 1;
     }
     else {
         *pLeftLight = 1;
         *pRightLight = 0;
-        printf("left light: green\n");
+        *pLightChanged = *pLightChanged + 1;
     }
 
 
@@ -63,22 +86,22 @@ int main()
     *pJoinLeft = randomIntNum();
     if (*pJoinLeft == 1){
         enqueue(pLeftQueue, 1);
-        printf("car joins left queue \n");
+        *pLeftCarAdded = *pLeftCarAdded + 1;
+        *pCarAddedCounter = *pCarAddedCounter + 1;
     }
-
 
     /* zero or one car right queue */
     *pJoinRight = randomIntNum();
     if (*pJoinRight == 1){
         enqueue(pRightQueue, 1);
-        printf("car joins right queue \n");
+        *pRightCarAdded = *pRightCarAdded + 1;
+        *pCarAddedCounter = *pCarAddedCounter + 1;
     }
 
 
     /* checks if left and right queue are not null */
     *pHasLeftQueueHeadValue = intDisplay(pLeftQueue->front);
     *pHasRightQueueHeadValue = intDisplay(pRightQueue->front);
-
 
     /* variables that will be used later to check if queue is not empty */
     int leftNotEmpty = intDisplay(pLeftQueue->front);
@@ -87,42 +110,53 @@ int main()
     /* Check to see if the cars should pass through the lights */
     *pPassThroughLights = randomIntNum();
     if (*pPassThroughLights == 1){
-        printf("Pass through lights requested...  \n");
+        *pRequestCarPass = *pRequestCarPass + 1;
 
-        /* check lights to see if left car goes through  */
+        /* check lights to see if left car queue can through  */
         if (*pLeftLight == 1){
-            printf("Please pass through left light... \n");
-
             /* Left is not empty... */
             if (leftNotEmpty == 1){
                 dequeue(pLeftQueue);
-                printf("Left car passes through... %d \n", leftNotEmpty);
+                *pLeftCarpassed = *pLeftCarpassed + 1;
             }
             
             /* Left queue is empty */
             if (leftNotEmpty == 0){
-                printf("Left queue is empty...: %d \n", leftNotEmpty);
             }
         } 
 
-        /* check lights to see if right car goes through  */
+        /* check lights to see if right car queue can through  */
         if (*pRightLight == 1){
-            printf("Please pass through right light... \n");
 
             /* Right is not empty... */
             if (rightNotEmpty == 1){
-                printf("Right car passes through... %d \n", rightNotEmpty);
+                *pRightCarpassed = *pRightCarpassed + 1;
                 dequeue(pRightQueue);
             }
             
             /* Right queue is empty */
             if (rightNotEmpty == 0){
-                printf("Right queue is empty...: %d \n", rightNotEmpty);
             }
 
         }
     } else {
-        printf("Request not to pass through \n");
+        /* printf("Request not to pass through \n"); */
+    }
+
+    /* calculate total cars passed that iteration */
+    *pTotalCarsPassed = *pLeftCarpassed + *pRightCarpassed;
+
+    /* Print out the progress of that timestep(iteration) */
+    printf("\n Lights Changed: %d \n", *pLightChanged);
+    printf("L-Car Added: %d,   R-Car Added: %d  \n",*pLeftCarAdded, *pRightCarAdded);
+    printf("CarsAddedCounter: %d \n", *pCarAddedCounter);
+    printf("Request that car pass: %d \n \n", *pRequestCarPass);
+
+    /* Break loop if the total cars added 
+        to the queue is less than cars requested to pass */
+
+    if (*pCarAddedCounter < *pRequestCarPass){
+
     }
 
     /* Freeing the queues from memory */
