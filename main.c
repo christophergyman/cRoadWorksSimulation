@@ -37,40 +37,47 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
     float passThroughLights;
     float *pPassThroughLights = & passThroughLights;
 
-    /* Variables that track the progress of the traffic */
+    /* Defulat Variables that are manually set to start the loop */
     int lightChanged = 0;
-    int *pLightChanged = &lightChanged;
-
     int leftCarAdded = 0;
-    int *pLeftCarAdded= &leftCarAdded;
-
     int rightCarAdded = 0;
-    int *pRightCarAdded= &rightCarAdded;
-
     int carAddedCounter = 0;
-    int *pCarAddedCounter= &carAddedCounter;
-
     int requestCarPass = 0;
-    int *pRequestCarPass = &requestCarPass;
-
     int leftCarPassed = 0;
-    int *pLeftCarpassed = &leftCarPassed;
-
     int rightCarPassed = 0;
-    int *pRightCarpassed = &rightCarPassed;
-
     int totalCarsPassed = 0;
-    int *pTotalCarsPassed = &totalCarsPassed;
-
     int iterationCounter = 0;
-    int *pIterationCounter = &iterationCounter;
-
     int lightsChangeCounter = 0;
+    int leftClearanceTime = 0;
+    int rightClearanceTime = 0;
+
+    /* Assigned all of those manually set defualt variables to pointers 
+    purpose is so that in the future if these values are needed to be passed to 
+    other functions they can be, future proofing the program  */
+    int *pLightChanged = &lightChanged;
+    int *pLeftCarAdded= &leftCarAdded;
+    int *pRightCarAdded= &rightCarAdded;
+    int *pCarAddedCounter= &carAddedCounter;
+    int *pRequestCarPass = &requestCarPass;
+    int *pLeftCarpassed = &leftCarPassed;
+    int *pRightCarpassed = &rightCarPassed;
+    int *pTotalCarsPassed = &totalCarsPassed;
+    int *pIterationCounter = &iterationCounter;
     int *pLightsChangeCounter = &lightsChangeCounter;
 
+    int *pLeftClearanceTime = &leftClearanceTime;
+    int *pRightClearanceTime = &rightClearanceTime;
+
+
+    /* Assigning user input to local variable */
     int leftLightPeroidCounter = leftLightPeroid;
     int rightLightPeroidCounter = rightLightPeroid;
 
+    /* current simulation variables being set */
+    float leftAverageWaitingTime = 0;
+    float leftMaxWaitingTime = 0;
+    float rightAverageWaitingTime = 0;
+    float rightMaxWaitingTime = 0;
 
     /* Initially set the lights randomly  */
     *pStartLightFloat = randomIntNum(); 
@@ -97,7 +104,6 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
 
             /* If the light peroid is zero, change the lights*/
             if (leftLightPeroidCounter == 0){
-
                 /* change left light */
                 if (*pLeftLight == 0){
                     *pLeftLight= 1;
@@ -133,7 +139,6 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
             }
 
 
-            
 
             /* Current iteration light change */
             *pStartLightFloat = randomIntNum(); 
@@ -156,7 +161,7 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
 
                 /* zero or one car left queue */
                 *pJoinLeft = randomFloatNum();
-                if (*pJoinLeft > leftArrivalRate){
+                if (*pJoinLeft < leftArrivalRate){
                     enqueue(pLeftQueue, 1);
                     *pLeftCarAdded = *pLeftCarAdded + 1;
                     *pCarAddedCounter = *pCarAddedCounter + 1;
@@ -164,7 +169,7 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
 
                 /* zero or one car right queue */
                 *pJoinRight = randomIntNum();
-                if (*pJoinRight > rightArrivalRate){
+                if (*pJoinRight < rightArrivalRate){
                     enqueue(pRightQueue, 1);
                     *pRightCarAdded = *pRightCarAdded + 1;
                     *pCarAddedCounter = *pCarAddedCounter + 1;
@@ -193,13 +198,16 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
                     }
 
                     if (leftNotEmpty == 0){
-                        printf("...Left queue is now empty... \n");
+                        /* printf("...Left queue is now empty... \n"); */
+                        *pLeftClearanceTime = *pIterationCounter;
                     }
                     
                     /* Check if left and right queues are empty, if so break */
                     if ( (leftNotEmpty == 0) && (rightNotEmpty == 0) ){
                         /* printf("left queue: %d,    right queue: %d \n", leftNotEmpty, rightNotEmpty); */
+                        /* 
                         printf("Left and right is empty \n");
+                        */
                         break;
                     }
                 } 
@@ -213,12 +221,15 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
                     }
                     
                     if (rightNotEmpty == 0){
-                        printf("...Right queue is now empty... \n");
+                        /* printf("...Right queue is now empty... \n"); */
+                        *pRightClearanceTime = *pIterationCounter;
                     }
                     /* Check if left and right queues are empty, if so break */
                     if ( (leftNotEmpty == 0) && (rightNotEmpty == 0) ){
                         /* printf("left queue: %d,    right queue: %d \n", leftNotEmpty, rightNotEmpty); */
+                        /*
                         printf("Right and left queue is empty \n");
+                        */
                         break;
                     }
 
@@ -234,19 +245,83 @@ void runOneSimulation(float leftArrivalRate, int leftLightPeroid, float rightArr
         *pTotalCarsPassed = *pLeftCarpassed + *pRightCarpassed;
 
         /* Print out the progress of that timestep(iteration) */
-        printf("\n===================================\n");
+        /* 
         printf("Left light is: %d     Right light is: %d  \n", *pLeftLight, *pRightLight);
-        printf("Current Iteration: %d \n", *pIterationCounter);
-        /* printf("Lights Changed: %d \n", *pLightChanged); */
-        printf("L-Car Added: %d,   R-Car Added: %d  \n",*pLeftCarAdded, *pRightCarAdded);
-        printf("L-Car Passed %d,   R-Car Passed %d  \n", *pLeftCarpassed, *pRightCarpassed);
-        printf("Car allowed to go through: %d \n ", *pRequestCarPass);
+        */
 
     }
+
+    printf("    from left: \n");
+    printf("        number of vehicles: %d \n", *pLeftCarAdded);
+    printf("        average waiting time: \n");
+    printf("        maximum waiting time: \n");
+    printf("        clearance time: %d \n", *pLeftClearanceTime);
+    printf("    from right: \n");
+    printf("        number of vehicles: %d \n", *pRightCarAdded);
+    printf("        average waiting time:  \n");
+    printf("        maximum waiting time:  \n");
+    printf("        clearance time: %d \n", *pRightClearanceTime);
+
+
+
+    /* 
+    printf("\n===================================\n");
+    printf("Current Iteration: %d \n", *pIterationCounter);
+    printf("L-Car Added: %d,   R-Car Added: %d  \n",*pLeftCarAdded, *pRightCarAdded);
+    printf("L-Car Passed %d,   R-Car Passed %d  \n", *pLeftCarpassed, *pRightCarpassed);
+    printf("Car allowed to go through: %d \n ", *pRequestCarPass);
+    */
 
     /* Freeing the queues from memory */
     free(pLeftQueue);
     free(pRightQueue);
+
+}
+
+
+void runSimulations(){
+
+    /* hardcoded input */
+    float leftTrafficArriveRate = 0.5;
+    float leftLightPeroid = 0.5;
+    float rightTrafficeArriveRate = 0.5;
+    float rightLightPeroid = 0.5;
+    runOneSimulation(leftLightPeroid, leftLightPeroid, rightTrafficeArriveRate, rightLightPeroid);
+
+    float leftNumberOfVehicles;
+    float leftAverageWaitingTime;
+    float leftMaxWaitingTime;
+    float leftClearanceTime;
+
+    float rightNumberOfVehicles;
+    float rightAverageWaitingTime;
+    float rightMaxWaitingTime;
+    float rightClearanceTime;
+
+    /* Print out input in console aswell as results */
+    /* 
+    printf(" \n \n");
+    printf("Parameter values: \n");
+    printf("    from left: \n");
+    printf("        traffic arrival rate: %f \n", leftTrafficArriveRate);
+    printf("        traffic light peroid: %f \n", leftLightPeroid);
+    printf("    from right: \n");
+    printf("        traffic arrival rate: %f \n", rightTrafficeArriveRate);
+    printf("        traffic light peroid: %f \n", rightLightPeroid);
+    printf("Results (averaged over 100 runs");
+    printf("    from left: \n");
+    printf("        number of vehicles: %f \n", totalNumVehicles);
+    printf("        average waiting time: %f \n", averageWaitingTime);
+    printf("        maximum waiting time: %f \n", totalNumVehicles);
+    printf("        clearance time: %f \n", totalNumVehicles);
+    printf("    from right: \n");
+    printf("        number of vehicles: %f \n", totalNumVehicles);
+    printf("        average waiting time: %f \n", averageWaitingTime);
+    printf("        maximum waiting time: %f \n", totalNumVehicles);
+    printf("        clearance time: %f \n", totalNumVehicles);
+
+    */
+
 
 }
 
@@ -267,8 +342,12 @@ int main()
     float rightTrafficeArriveRate = 0.5;
     float rightLightPeroid = 0.5;
 
-    /* Run one simulation */
-    runOneSimulation(leftLightPeroid, leftLightPeroid, rightTrafficeArriveRate, rightLightPeroid);
+    runSimulations();
 
+    /* Run one simulation 
+    runOneSimulation(leftLightPeroid, leftLightPeroid, rightTrafficeArriveRate, rightLightPeroid);
+    sleep(0.01);
+    runOneSimulation(leftLightPeroid, leftLightPeroid, rightTrafficeArriveRate, rightLightPeroid);
+    */
     return 0;
 }

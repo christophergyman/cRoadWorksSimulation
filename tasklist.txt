@@ -1,4 +1,27 @@
-1) Do timing of the cars
+    float leftNumberOfVehicles;
+        *pLeftCarAdded
+    float leftAverageWaitingTime;
+    float leftMaxWaitingTime;
+    float leftClearanceTime;
+        *pLeftClearanceTime
+
+    float rightNumberOfVehicles;
+        *pRightCarAdded
+        
+    float rightAverageWaitingTime;
+    float rightMaxWaitingTime;
+
+    float rightClearanceTime;
+        *pRightClearanceTime
+
+
+
+
+
+
+
+
+
 
 # # useful code reminders
 
