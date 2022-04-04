@@ -66,6 +66,21 @@ void display(node *head)
     }
 }
 
+/* return time it took car to leave queue */
+int returnCarTime(node *head)
+{
+    if(head == NULL)
+    {
+        /* printf("NULL\n"); */
+    }
+    else
+    {
+        /* printf("%d\n", head -> data); */
+        return(head->data);
+
+    }
+}
+
 /* return if head is null */
 int intDisplay(node *head)
 {
